@@ -124,7 +124,7 @@ export default class ListAluno extends Component {
                   onClick={() => this.setAlunoSel(aluno, index)}
                   key={index}
                 >
-                  {aluno.nome}
+                  {aluno.name}
                 </li>
               ))}
           </ul>
