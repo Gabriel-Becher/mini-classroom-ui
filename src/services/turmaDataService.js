@@ -24,10 +24,6 @@ class TurmaDataService {
   deleteAll() {
     return http.delete(`/turmas`);
   }
-
-  findByName(data) {
-    return http.get(`/turmas?name=/${data}`);
-  }
 }
 
 export default new TurmaDataService();

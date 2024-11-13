@@ -6,7 +6,7 @@ class ProfessorDataService {
   }
 
   get(id) {
-    return http.get(`/professores${id}`);
+    return http.get(`/professores/${id}`);
   }
 
   create(data) {
@@ -23,10 +23,6 @@ class ProfessorDataService {
 
   deleteAll() {
     return http.delete(`/professores`);
-  }
-
-  findByName(data) {
-    return http.get(`/professores?name=/${data}`);
   }
 }
 

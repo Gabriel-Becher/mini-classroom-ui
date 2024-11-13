@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import ProfessorDataService from "../../services/professorDataService";
+import ProfessorDataService from "../../../services/professorDataService";
 import { Link } from "react-router-dom";
 
 export default class ListProfessor extends Component {

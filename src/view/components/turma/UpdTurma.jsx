@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import AlunoDataService from "../../services/alunoDataService";
+import TurmaDataService from "../../../services/turmaDataService";
 import { Link } from "react-router-dom";
 
-export default class ListAluno extends Component {
+export default class UpdTurma extends Component {
   constructor(props) {
     super(props);
 
@@ -10,7 +10,7 @@ export default class ListAluno extends Component {
     this.retrieveAluno = this.retrieveAluno.bind(this);
     this.refreshList = this.refreshList.bind(this);
     this.setAlunoSel = this.setAlunoSel.bind(this);
-    this.remove = this.remove.bind(this);
+    this.removeAll = this.removeAll.bind(this);
     this.searchNome = this.searchNome.bind(this);
 
     this.state = {
@@ -18,7 +18,6 @@ export default class ListAluno extends Component {
       alunoSel: null,
       indice: -1,
       nome: "",
-      foto: null
     };
   }
 
@@ -35,7 +34,7 @@ export default class ListAluno extends Component {
   }
 
   retrieveAluno() {
-    AlunoDataService.getAll()
+    TurmaDataService.getAll()
       .then((response) => {
         this.setState({
           alunos: response.data,
@@ -61,20 +60,14 @@ export default class ListAluno extends Component {
     });
   }
 
-  remove() {
-    const { alunoSel } = this.state;
-    if (alunoSel) {
-      AlunoDataService.delete(alunoSel.id)
-        .then(() => {
-          this.refreshList();
-          this.setState({ alunoSel: null, indice: -1 });
-        })
-        .catch((e) => {
-          console.log("Erro: " + e);
-        });
-    } else {
-      console.log("Nenhum aluno selecionado para exclusão.");
-    }
+  removeAll() {
+    TurmaDataService.deleteAll()
+      .then(() => {
+        this.refreshList();
+      })
+      .catch((e) => {
+        console.log("Erro: " + e);
+      });
   }
 
   searchNome() {
@@ -83,7 +76,7 @@ export default class ListAluno extends Component {
       indice: -1,
     });
 
-    AlunoDataService.findByName(this.state.nome)
+    TurmaDataService.findByNome(this.state.nome)
       .then((response) => {
         this.setState({
           alunos: response.data,
@@ -98,8 +91,8 @@ export default class ListAluno extends Component {
     const { nome, alunos, alunoSel, indice } = this.state;
 
     return (
-      <div className="row justify-content-center">
-        <div className="col-md-8 d-flex">
+      <div className="row">
+        <div className="col-md-8">
           <div className="input-group mb-3">
             <input
               type="text"
@@ -119,25 +112,29 @@ export default class ListAluno extends Component {
             </div>
           </div>
         </div>
-        <div className="row justify-content-center">
-          <div className="col-md-6">
-            <h3 className="text-center text-light">Alunos</h3>
-            <ul className="list-group">
-              {alunos &&
-                alunos.map((aluno, index) => (
-                  <li
-                    className={
-                      "list-group-item " + (index === indice ? "active" : "")
-                    }
-                    onClick={() => this.setAlunoSel(aluno, index)}
-                    key={index}
-                  >
-                    {aluno.name}
-                    {/* <img src={aluno.foto?.url} alt="Foto do Aluno" /> Aqui deveria ser exibida a foto do aluno */}
-                  </li>
-                ))}
-            </ul>
-          </div>
+        <div className="col-md-6">
+          <h3 className="text-center">Alunos</h3>
+          <ul className="list-group">
+            {alunos &&
+              alunos.map((aluno, index) => (
+                <li
+                  className={
+                    "list-group-item " + (index === indice ? "active" : "")
+                  }
+                  onClick={() => this.setAlunoSel(aluno, index)}
+                  key={index}
+                >
+                  {aluno.name}
+                </li>
+              ))}
+          </ul>
+
+          <button
+            className="m-1 btn btn-sm btn-danger"
+            onClick={this.removeAll}
+          >
+            Excluir todos
+          </button>
         </div>
         <div className="col-md-6">
           {alunoSel ? (
@@ -145,29 +142,24 @@ export default class ListAluno extends Component {
               <h4>&nbsp;</h4>
               <div>
                 <label>
+                  <strong>Nome:</strong>
                 </label>{" "}
                 {alunoSel.nome}
               </div>
 
               <Link
-                to={"/update/" + alunoSel.id}
+                to={"/list/" + alunoSel.id}
                 className="btn btn-sm btn-warning"
                 role="button"
               >
-                Atualizar Cadastro
+                Editar
               </Link>
-              <button
-              className="m-1 btn btn-sm btn-danger"
-              onClick={this.remove}
-            >
-              Excluir Aluno
-            </button>
             </div>
           ) : (
-            <div className="text-center text-light">
+            <div>
               <h4>&nbsp;</h4>
               <p>
-                <i>Selecione um aluno para editar ou excluir</i>
+                <i>Selecione um aluno</i>
               </p>
             </div>
           )}

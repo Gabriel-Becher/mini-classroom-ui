@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import TurmaDataService from "../../services/turmaDataService";
+import TurmaDataService from "../../../services/turmaDataService";
 import { Link } from "react-router-dom";
 
-export default class UpdTurma extends Component {
+export default class ListTurma extends Component {
   constructor(props) {
     super(props);
 
@@ -34,7 +34,7 @@ export default class UpdTurma extends Component {
   }
 
   retrieveAluno() {
-    TurmaDataService.getAll()
+    AlunoDataService.getAll()
       .then((response) => {
         this.setState({
           alunos: response.data,
@@ -61,7 +61,7 @@ export default class UpdTurma extends Component {
   }
 
   removeAll() {
-    TurmaDataService.deleteAll()
+    AlunoDataService.deleteAll()
       .then(() => {
         this.refreshList();
       })
@@ -76,7 +76,7 @@ export default class UpdTurma extends Component {
       indice: -1,
     });
 
-    TurmaDataService.findByNome(this.state.nome)
+    AlunoDataService.findByNome(this.state.nome)
       .then((response) => {
         this.setState({
           alunos: response.data,
@@ -91,8 +91,8 @@ export default class UpdTurma extends Component {
     const { nome, alunos, alunoSel, indice } = this.state;
 
     return (
-      <div className="row">
-        <div className="col-md-8">
+      <div className="row justify-content-center">
+        <div className="col-md-8 d-flex">
           <div className="input-group mb-3">
             <input
               type="text"
