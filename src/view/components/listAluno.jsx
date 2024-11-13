@@ -62,13 +62,19 @@ export default class ListAluno extends Component {
   }
 
   remove() {
-    AlunoDataService.delete(alunoSel.id)
-      .then(() => {
-        this.refreshList();
-      })
-      .catch((e) => {
-        console.log("Erro: " + e);
-      });
+    const { alunoSel } = this.state;
+    if (alunoSel) {
+      AlunoDataService.delete(alunoSel.id)
+        .then(() => {
+          this.refreshList();
+          this.setState({ alunoSel: null, indice: -1 });
+        })
+        .catch((e) => {
+          console.log("Erro: " + e);
+        });
+    } else {
+      console.log("Nenhum aluno selecionado para exclusão.");
+    }
   }
 
   searchNome() {
@@ -77,7 +83,7 @@ export default class ListAluno extends Component {
       indice: -1,
     });
 
-    AlunoDataService.findByNome(this.state.nome)
+    AlunoDataService.findByName(this.state.nome)
       .then((response) => {
         this.setState({
           alunos: response.data,
