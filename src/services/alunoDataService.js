@@ -14,11 +14,11 @@ class AlunoDataService {
   }
 
   update(id, data) {
-    return http.put(`/alunos${id}`, data);
+    return http.put(`/alunos/${id}`, data);
   }
 
   delete(id) {
-    return http.delete(`/alunos${id}`);
+    return http.delete(`/alunos/${id}`);
   }
 
   findByName(data) {

@@ -137,12 +137,6 @@ export default class ListAluno extends Component {
                   </li>
                 ))}
             </ul>
-            <button
-              className="m-1 btn btn-sm btn-danger"
-              onClick={this.remove}
-            >
-              Excluir Aluno
-            </button>
           </div>
         </div>
         <div className="col-md-6">
@@ -156,12 +150,18 @@ export default class ListAluno extends Component {
               </div>
 
               <Link
-                to={"/list/" + alunoSel.id}
+                to={"/update/" + alunoSel.id}
                 className="btn btn-sm btn-warning"
                 role="button"
               >
-                Editar
+                Atualizar Cadastro
               </Link>
+              <button
+              className="m-1 btn btn-sm btn-danger"
+              onClick={this.remove}
+            >
+              Excluir Aluno
+            </button>
             </div>
           ) : (
             <div className="text-center text-light">
