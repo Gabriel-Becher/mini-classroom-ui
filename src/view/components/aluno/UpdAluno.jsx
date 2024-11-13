@@ -14,6 +14,7 @@ class UpdAluno extends Component {
       id: undefined,
       name: "",
       foto: null,
+      fotoOrg: null,
       update: 0,
     };
   }
@@ -41,6 +42,18 @@ class UpdAluno extends Component {
     formData.append("aluno_id", this.state.id);
     formData.append("picture", this.state.foto);
 
+    if (!this.state.fotoOrg) {
+      FotoDataService.create(formData)
+        .then(() => {
+          this.setState({
+            update: 1,
+          });
+          return;
+        })
+        .catch((e) => {
+          console.log("Erro: " + e);
+        });
+    }
     FotoDataService.update(this.state.id, formData)
       .then(() => {
         this.setState({
