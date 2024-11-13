@@ -21,10 +21,6 @@ class AlunoDataService {
     return http.delete(`/alunos${id}`);
   }
 
-  deleteAll() {
-    return http.delete(`/alunos`);
-  }
-
   findByName(data) {
     return http.get(`/alunos?name=${data}`);
   }

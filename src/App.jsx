@@ -85,7 +85,7 @@ class Sidebar extends Component {
             <hr></hr>
           </li>
           <li className="nav-item">
-            <Link to={"/professor/"} className="nav-link">
+            <Link to={"/professor/list"} className="nav-link">
               <img
                 className="d-block mx-auto"
                 src="https://img.icons8.com/external-wanicon-solid-wanicon/64/external-teacher-online-learning-wanicon-solid-wanicon.png"
@@ -97,7 +97,7 @@ class Sidebar extends Component {
             <hr></hr>
           </li>
           <li className="nav-item">
-            <Link to={"/turma/"} className="nav-link">
+            <Link to={"/turma/list"} className="nav-link">
               <img
                 className="d-block mx-auto"
                 src="https://img.icons8.com/external-wanicon-solid-wanicon/64/external-classroom-kindergarten-wanicon-solid-wanicon.png"
@@ -109,7 +109,7 @@ class Sidebar extends Component {
             <hr></hr>
           </li>
           <li className="nav-item">
-            <Link to={"/aviso/"} className="nav-link">
+            <Link to={"/aviso/list"} className="nav-link">
               <img
                 className="d-block mx-auto"
                 src="https://img.icons8.com/ios-filled/64/envelope-dots.png"
