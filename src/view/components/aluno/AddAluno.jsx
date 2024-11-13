@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import AlunoDataService from "../../../services/alunoDataService";
 import TurmaDataService from "../../../services/turmaDataService";
 import FotoDataService from "../../../services/fotoDataService";
+import { Link } from "react-router-dom";
 export default class AddAluno extends Component {
   constructor(props) {
     super(props);
@@ -52,12 +53,13 @@ export default class AddAluno extends Component {
           id: response.data.id,
           name: response.data.name,
         });
-        const aluno_id = response.data.id;
-        const formData = new FormData();
-        formData.append("aluno_id", aluno_id);
-        formData.append("picture", data.foto);
-        console.log(formData.entries());
-        FotoDataService.create(formData);
+        if (this.state.foto) {
+          const aluno_id = response.data.id;
+          const formData = new FormData();
+          formData.append("aluno_id", aluno_id);
+          formData.append("picture", data.foto);
+          FotoDataService.create(formData);
+        }
       })
       .catch((e) => {
         console.log("Erro: " + e);
@@ -95,9 +97,14 @@ export default class AddAluno extends Component {
         {this.state.id ? (
           <div>
             <h5>Novo aluno criado</h5>
-            <button className="btn btn-blue" onClick={this.newAluno}>
-              Continuar adicionando
-            </button>
+            <Link
+              to="/alunos/add"
+              className="btn btn-primary"
+              onClick={this.newAluno}
+              style={{ margin: "10px" }}
+            >
+              Continuar
+            </Link>
           </div>
         ) : (
           <div style={{ maxWidth: "400px", margin: "auto" }}>

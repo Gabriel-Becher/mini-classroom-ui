@@ -10,7 +10,7 @@ class ProfessorDataService {
   }
 
   create(data) {
-    return http.post("/professores", data);
+    return http.post("/professores/", data);
   }
 
   update(id, data) {

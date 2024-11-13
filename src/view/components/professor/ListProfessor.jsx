@@ -6,38 +6,28 @@ export default class ListProfessor extends Component {
   constructor(props) {
     super(props);
 
-    this.onChangeSearchNome = this.onChangeSearchNome.bind(this);
-    this.retrieveAluno = this.retrieveAluno.bind(this);
+    this.retrieveProfessor = this.retrieveProfessor.bind(this);
     this.refreshList = this.refreshList.bind(this);
-    this.setAlunoSel = this.setAlunoSel.bind(this);
-    this.removeAll = this.removeAll.bind(this);
-    this.searchNome = this.searchNome.bind(this);
+    this.setProfSel = this.setProfSel.bind(this);
+    this.remove = this.remove.bind(this);
 
     this.state = {
-      alunos: [],
-      alunoSel: null,
+      professores: [],
+      profSel: null,
       indice: -1,
       nome: "",
     };
   }
 
   componentDidMount() {
-    this.retrieveAluno();
+    this.retrieveProfessor();
   }
 
-  onChangeSearchNome(e) {
-    const searchNome = e.target.value;
-
-    this.setState({
-      nome: searchNome,
-    });
-  }
-
-  retrieveAluno() {
+  retrieveProfessor() {
     ProfessorDataService.getAll()
       .then((response) => {
         this.setState({
-          alunos: response.data,
+          professores: response.data,
         });
       })
       .catch((e) => {
@@ -46,22 +36,22 @@ export default class ListProfessor extends Component {
   }
 
   refreshList() {
-    this.retrieveAluno();
+    this.retrieveProfessor();
     this.setState({
       alunoSel: null,
       indice: -1,
     });
   }
 
-  setAlunoSel(aluno, index) {
+  setProfSel(Professor, index) {
     this.setState({
-      alunoSel: aluno,
+      profSel: Professor,
       indice: index,
     });
   }
 
-  removeAll() {
-    ProfessorDataService.deleteAll()
+  remove() {
+    ProfessorDataService.delete(this.state.profSel.id)
       .then(() => {
         this.refreshList();
       })
@@ -70,96 +60,67 @@ export default class ListProfessor extends Component {
       });
   }
 
-  searchNome() {
-    this.setState({
-      alunoSel: null,
-      indice: -1,
-    });
-
-    ProfessorDataService.findByNome(this.state.nome)
-      .then((response) => {
-        this.setState({
-          alunos: response.data,
-        });
-      })
-      .catch((e) => {
-        console.log("Erro: " + e);
-      });
-  }
-
   render() {
-    const { nome, alunos, alunoSel, indice } = this.state;
-
+    const { professores, profSel, indice } = this.state;
+    const myStyle = {
+      width: "100%",
+      alignSelf: "center",
+      textAlign: "center",
+    };
     return (
       <div className="row justify-content-center">
-        <div className="col-md-8 d-flex">
-          <div className="input-group mb-3">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Buscar pelo nome"
-              value={nome}
-              onChange={this.onChangeSearchNome}
-            />
-            <div className="input-group-append">
-              <button
-                className="btn btn-outline-secondary btn-light"
-                type="button"
-                onClick={this.searchNome}
-              >
-                Buscar
-              </button>
-            </div>
-          </div>
-        </div>
-        <div className="col-md-6">
-          <h3 className="text-center">Alunos</h3>
+        <div className="col-md-6 d-flex flex-column  align-items-center">
+          <h3 className="text-center">Professores</h3>
+          <Link to={"/professores/add"} style={myStyle}>
+            <button className="btn btn-outline-secondary btn-warning text-gray w-25">
+              Adicionar Professor
+            </button>
+          </Link>
           <ul className="list-group">
-            {alunos &&
-              alunos.map((aluno, index) => (
+            {professores &&
+              professores.map((professor, index) => (
                 <li
                   className={
                     "list-group-item " + (index === indice ? "active" : "")
                   }
-                  onClick={() => this.setAlunoSel(aluno, index)}
+                  onClick={() => this.setProfSel(professor, index)}
                   key={index}
                 >
-                  {aluno.name}
+                  {professor.name}
                 </li>
               ))}
           </ul>
-
-          <button
-            className="m-1 btn btn-sm btn-danger"
-            onClick={this.removeAll}
-          >
-            Excluir todos
-          </button>
         </div>
         <div className="col-md-6">
-          {alunoSel ? (
+          {profSel ? (
             <div>
               <h4>&nbsp;</h4>
               <div>
                 <label>
                   <strong>Nome:</strong>
                 </label>{" "}
-                {alunoSel.nome}
+                {profSel.name}
               </div>
 
               <Link
-                to={"/list/" + alunoSel.id}
+                to={"/professores/" + profSel.id}
                 className="btn btn-sm btn-warning"
                 role="button"
               >
                 Editar
               </Link>
+              <button
+                className="m-1 btn btn-sm btn-danger"
+                onClick={this.remove}
+              >
+                Excluir Professor
+              </button>
             </div>
           ) : (
             <div>
               <h4>&nbsp;</h4>
               <p>
-                <i>Selecione um aluno</i>
+                <i>Selecione um professor</i>
               </p>
             </div>
           )}

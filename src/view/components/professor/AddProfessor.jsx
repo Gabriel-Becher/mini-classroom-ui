@@ -1,46 +1,48 @@
 import React, { Component } from "react";
 import ProfessorDataService from "../../../services/professorDataService";
+import { Link } from "react-router-dom";
+import TurmaDataService from "../../../services/turmaDataService";
 
 export default class AddProfessor extends Component {
   constructor(props) {
     super(props);
 
     this.onChangeNome = this.onChangeNome.bind(this);
-    this.onChangeFoto = this.onChangeFoto.bind(this);
-    this.saveAluno = this.saveAluno.bind(this);
-    this.newAluno = this.newAluno.bind(this);
-
+    this.saveProfessor = this.saveProfessor.bind(this);
+    this.newProfessor = this.newProfessor.bind(this);
+    this.componentDidMount = this.componentDidMount.bind(this);
     this.state = {
       id: null,
-      nome: "",
-      foto: null,
+      name: "",
+      turma_id: undefined,
+      turmas: [],
     };
   }
 
   onChangeNome(e) {
     this.setState({
-      nome: e.target.value,
+      name: e.target.value,
     });
   }
 
-  onChangeFoto(e) {
+  onChangeTurmaId(e) {
     this.setState({
-      foto: e.target.value,
+      turma_id: e.target.value,
     });
   }
 
-  saveAluno() {
+  saveProfessor() {
     var data = {
-      nome: this.state.nome,
-      foto: this.state.foto,
+      name: this.state.name,
+      turma_id: this.state.turma_id,
     };
 
-    AlunoDataService.create(data)
+    ProfessorDataService.create(data)
       .then((response) => {
         this.setState({
           id: response.data.id,
-          nome: response.data.nome,
-          foto: response.data.foto,
+          name: response.data.name,
+          turma_id: response.data.turma_id,
         });
       })
       .catch((e) => {
@@ -48,57 +50,84 @@ export default class AddProfessor extends Component {
       });
   }
 
-  newAluno() {
+  componentDidMount() {
+    TurmaDataService.getAll()
+      .then((response) => {
+        this.setState({
+          turmas: response.data,
+        });
+      })
+      .then(() => {
+        this.setState({
+          turma_id: this.state.turmas[0].id,
+        });
+      });
+  }
+
+  newProfessor() {
     this.setState({
       id: null,
-      nome: "",
-      foto: null,
+      name: "",
+      turma_id: undefined,
+      turmas: null,
     });
   }
 
   render() {
+    const { turmas } = this.state;
+
     return (
       <div style={{ maxWidth: "400px", margin: "auto" }}>
         {this.state.id ? (
           <div>
-            <h5>Novo aluno criado</h5>
-            <button className="btn btn-blue" onClick={this.newAluno}>
-              Continuar adicionando
-            </button>
+            <h5>Novo Professor criado</h5>
+            <Link
+              className="btn btn-primary"
+              to={"/professores/add"}
+              onClick={this.newProfessor}
+              role="button"
+              content="Continuar"
+            >
+              Continuar
+            </Link>
           </div>
         ) : (
           <div style={{ maxWidth: "400px", margin: "auto" }}>
             <div className="form-group">
               <label htmlFor="Nome">
-                <strong>Nome do aluno</strong>
+                <strong>Nome do Professor</strong>
               </label>
               <input
                 type="text"
                 className="form-control"
                 id="nome"
                 required
-                value={this.state.nome}
                 onChange={this.onChangeNome}
-                name="nome"
+                name="name"
               />
             </div>
 
             <div className="form-group">
-              <label htmlFor="foto">
-                <strong>foto</strong>
+              <label htmlFor="turma">
+                <strong>Turma</strong>
               </label>
-              <input
-                type="image/png"
+              <select
                 className="form-control"
-                id="foto"
+                id="turmas"
+                name="turmas"
                 required
-                value={this.state.foto}
-                onChange={this.onChangeFoto}
-                name="foto"
-              />
+                onChange={this.onChangeTurmaId}
+              >
+                {turmas &&
+                  turmas.map((turma) => (
+                    <option key={turma.id} value={turma.id}>
+                      {turma.name}
+                    </option>
+                  ))}
+              </select>
             </div>
             <p></p>
-            <button onClick={this.saveAluno} className="btn btn-blue">
+            <button onClick={this.saveProfessor} className="btn btn-primary">
               Criar
             </button>
           </div>

@@ -1,170 +1,95 @@
 import React, { Component } from "react";
+import withRouter from "../utils/myRoute";
 import ProfessorDataService from "../../../services/professorDataService";
-import { Link } from "react-router-dom";
+import TurmaDataService from "../../../services/turmaDataService";
 
-export default class UpdProfessor extends Component {
+class UpdProfessor extends Component {
   constructor(props) {
     super(props);
 
-    this.onChangeSearchNome = this.onChangeSearchNome.bind(this);
-    this.retrieveAluno = this.retrieveAluno.bind(this);
-    this.refreshList = this.refreshList.bind(this);
-    this.setAlunoSel = this.setAlunoSel.bind(this);
-    this.removeAll = this.removeAll.bind(this);
-    this.searchNome = this.searchNome.bind(this);
+    this.saveProfessor = this.saveProfessor.bind(this);
+    this.onChangeTurmaId = this.onChangeTurmaId.bind(this);
 
     this.state = {
-      alunos: [],
-      alunoSel: null,
-      indice: -1,
-      nome: "",
+      id: undefined,
+      name: "",
+      turma_id: undefined,
+      turmas: [],
     };
   }
 
+  onChangeTurmaId(e) {
+    this.setState({
+      turma_id: e.target.value,
+    });
+  }
+
   componentDidMount() {
-    this.retrieveAluno();
-  }
-
-  onChangeSearchNome(e) {
-    const searchNome = e.target.value;
-
-    this.setState({
-      nome: searchNome,
-    });
-  }
-
-  retrieveAluno() {
-    ProfessorDataService.getAll()
-      .then((response) => {
-        this.setState({
-          alunos: response.data,
-        });
-      })
-      .catch((e) => {
-        console.log("Erro: " + e);
+    let id = this.props.match.params.id;
+    ProfessorDataService.get(id).then((response) => {
+      this.setState({
+        id: response.data.id,
+        name: response.data.name,
+        turma_id: response.data.turma_id,
       });
-  }
-
-  refreshList() {
-    this.retrieveAluno();
-    this.setState({
-      alunoSel: null,
-      indice: -1,
     });
-  }
-
-  setAlunoSel(aluno, index) {
-    this.setState({
-      alunoSel: aluno,
-      indice: index,
-    });
-  }
-
-  removeAll() {
-    ProfessorDataService.deleteAll()
-      .then(() => {
-        this.refreshList();
-      })
-      .catch((e) => {
-        console.log("Erro: " + e);
+    TurmaDataService.getAll().then((response) => {
+      this.setState({
+        turmas: response.data,
       });
+    });
   }
 
-  searchNome() {
-    this.setState({
-      alunoSel: null,
-      indice: -1,
-    });
-
-    ProfessorDataService.findByNome(this.state.nome)
-      .then((response) => {
-        this.setState({
-          alunos: response.data,
-        });
-      })
-      .catch((e) => {
-        console.log("Erro: " + e);
-      });
+  saveProfessor() {
+    const { turma_id } = this.state;
+    ProfessorDataService.update(this.state.id, { turma_id });
   }
 
   render() {
-    const { nome, alunos, alunoSel, indice } = this.state;
-
+    let { turmas } = this.state;
     return (
-      <div className="row">
-        <div className="col-md-8">
-          <div className="input-group mb-3">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Buscar pelo nome"
-              value={nome}
-              onChange={this.onChangeSearchNome}
-            />
-            <div className="input-group-append">
-              <button
-                className="btn btn-outline-secondary btn-light"
-                type="button"
-                onClick={this.searchNome}
-              >
-                Buscar
-              </button>
-            </div>
-          </div>
-        </div>
-        <div className="col-md-6">
-          <h3 className="text-center">Alunos</h3>
-          <ul className="list-group">
-            {alunos &&
-              alunos.map((aluno, index) => (
-                <li
-                  className={
-                    "list-group-item " + (index === indice ? "active" : "")
-                  }
-                  onClick={() => this.setAlunoSel(aluno, index)}
-                  key={index}
+      <div style={{ maxWidth: "400px", margin: "auto" }}>
+        <div style={{ maxWidth: "400px", margin: "auto" }}>
+          <div className="form-group">
+            {this.state.update === 1 ? (
+              <h1>Professor atualizado com sucesso</h1>
+            ) : (
+              <>
+                <label htmlFor="Nome">
+                  <strong>Nome do Professor</strong>
+                </label>
+                <h5>{this.state.name}</h5>
+                <label htmlFor="turma">
+                  <strong>Turma</strong>
+                </label>
+                <select
+                  className="form-control"
+                  id="turmas"
+                  name="turmas"
+                  required
+                  onChange={this.onChangeTurmaId}
                 >
-                  {aluno.name}
-                </li>
-              ))}
-          </ul>
-
-          <button
-            className="m-1 btn btn-sm btn-danger"
-            onClick={this.removeAll}
-          >
-            Excluir todos
-          </button>
-        </div>
-        <div className="col-md-6">
-          {alunoSel ? (
-            <div>
-              <h4>&nbsp;</h4>
-              <div>
-                <label>
-                  <strong>Nome:</strong>
-                </label>{" "}
-                {alunoSel.nome}
-              </div>
-
-              <Link
-                to={"/list/" + alunoSel.id}
-                className="btn btn-sm btn-warning"
-                role="button"
-              >
-                Editar
-              </Link>
-            </div>
-          ) : (
-            <div>
-              <h4>&nbsp;</h4>
-              <p>
-                <i>Selecione um aluno</i>
-              </p>
-            </div>
-          )}
+                  {turmas &&
+                    turmas.map((turma) => (
+                      <option key={turma.id} value={turma.id}>
+                        {turma.name}
+                      </option>
+                    ))}
+                </select>
+                <p></p>
+                <button
+                  onClick={this.saveProfessor}
+                  className="btn btn-primary"
+                >
+                  Salvar
+                </button>
+              </>
+            )}
+          </div>
         </div>
       </div>
     );
   }
 }
+
+export default withRouter(UpdProfessor);
