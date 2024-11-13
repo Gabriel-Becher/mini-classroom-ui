@@ -6,7 +6,7 @@ class TurmaDataService {
   }
 
   get(id) {
-    return http.get(`/turmas${id}`);
+    return http.get(`/turmas/${id}`);
   }
 
   create(data) {
@@ -14,11 +14,11 @@ class TurmaDataService {
   }
 
   update(id, data) {
-    return http.put(`/turmas${id}`, data);
+    return http.put(`/turmas/${id}`, data);
   }
 
   delete(id) {
-    return http.delete(`/turmas${id}`);
+    return http.delete(`/turmas/${id}`);
   }
 
   deleteAll() {
@@ -26,7 +26,7 @@ class TurmaDataService {
   }
 
   findByName(data) {
-    return http.get(`/turmas?name=${data}`);
+    return http.get(`/turmas?name=/${data}`);
   }
 }
 

@@ -22,7 +22,7 @@ class AlunoDataService {
   }
 
   findByName(data) {
-    return http.get(`/alunos?name=${data}`);
+    return http.get(`/alunos?name=/${data}`);
   }
 }
 

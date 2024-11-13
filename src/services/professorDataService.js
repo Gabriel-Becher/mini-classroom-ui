@@ -14,11 +14,11 @@ class ProfessorDataService {
   }
 
   update(id, data) {
-    return http.put(`/professores${id}`, data);
+    return http.put(`/professores/${id}`, data);
   }
 
   delete(id) {
-    return http.delete(`/professores${id}`);
+    return http.delete(`/professores/${id}`);
   }
 
   deleteAll() {
@@ -26,7 +26,7 @@ class ProfessorDataService {
   }
 
   findByName(data) {
-    return http.get(`/professores?name=${data}`);
+    return http.get(`/professores?name=/${data}`);
   }
 }
 

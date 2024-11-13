@@ -167,7 +167,7 @@ export default class ListAluno extends Component {
             <div className="text-center text-light">
               <h4>&nbsp;</h4>
               <p>
-                <i>Selecione um aluno para editar</i>
+                <i>Selecione um aluno para editar ou excluir</i>
               </p>
             </div>
           )}
