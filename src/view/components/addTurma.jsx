@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import AlunoDataService from "../../services/alunoDataService";
+import TurmaDataService from "../../services/turmaDataService";
 
-export default class AddAluno extends Component {
+export default class AddTurma extends Component {
 
     constructor(props) {
         super(props);

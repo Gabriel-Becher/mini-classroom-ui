@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import AlunoDataService from "../../services/alunoDataService";
+import ProfessorDataService from "../../services/professorDataService";
 import { Link } from "react-router-dom";
 
-export default class ListAluno extends Component {
+export default class ListProfessor extends Component {
   constructor(props) {
     super(props);
 
@@ -34,7 +34,7 @@ export default class ListAluno extends Component {
   }
 
   retrieveAluno() {
-    AlunoDataService.getAll()
+    ProfessorDataService.getAll()
       .then((response) => {
         this.setState({
           alunos: response.data,
@@ -61,7 +61,7 @@ export default class ListAluno extends Component {
   }
 
   removeAll() {
-    AlunoDataService.deleteAll()
+    ProfessorDataService.deleteAll()
       .then(() => {
         this.refreshList();
       })
@@ -76,7 +76,7 @@ export default class ListAluno extends Component {
       indice: -1,
     });
 
-    AlunoDataService.findByNome(this.state.nome)
+    ProfessorDataService.findByNome(this.state.nome)
       .then((response) => {
         this.setState({
           alunos: response.data,

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import AlunoDataService from "../../services/alunoDataService";
+import TurmaDataService from "../../services/turmaDataService";
 import { Link } from "react-router-dom";
 
-export default class ListAluno extends Component {
+export default class ListTurma extends Component {
   constructor(props) {
     super(props);
 

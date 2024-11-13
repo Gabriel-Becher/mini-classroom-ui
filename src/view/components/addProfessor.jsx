@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import AlunoDataService from "../../services/alunoDataService";
+import ProfessorDataService from "../../services/professorDataService";
 
-export default class AddAluno extends Component {
+export default class AddProfessor extends Component {
 
     constructor(props) {
         super(props);

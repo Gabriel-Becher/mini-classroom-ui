@@ -25,8 +25,8 @@ class AlunoDataService {
     return http.delete(`/alunos`);
   }
 
-  findByTitulo(data) {
-    return http.get(`/alunos?titulo=${data}`);
+  findByName(data) {
+    return http.get(`/alunos?name=${data}`);
   }
 }
 
