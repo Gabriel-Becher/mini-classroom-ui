@@ -145,8 +145,16 @@ export default class ListAluno extends Component {
                     onClick={() => this.setAlunoSel(aluno, index)}
                     key={index}
                   >
+                    {
+                      <img
+                        src={
+                          aluno.Foto?.url ||
+                          "https://filestore.community.support.microsoft.com/api/images/6061bd47-2818-4f2b-b04a-5a9ddb6f6467?upload=true"
+                        }
+                        alt="Foto do Aluno"
+                      />
+                    }
                     {aluno.name}
-                    {/* <img src={aluno.foto?.url} alt="Foto do Aluno" /> Aqui deveria ser exibida a foto do aluno */}
                   </li>
                 ))}
             </ul>
@@ -161,7 +169,7 @@ export default class ListAluno extends Component {
               </div>
 
               <Link
-                to={"/update/" + alunoSel.id}
+                to={"/alunos/" + alunoSel.id}
                 className="btn btn-sm btn-warning"
                 role="button"
               >

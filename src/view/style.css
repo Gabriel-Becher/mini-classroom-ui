@@ -1,3 +1,10 @@
 body {
-    background-color: #1ca15f;
+  background-color: #1ca15f;
+}
+
+img {
+  width: 100%;
+  height: auto;
+  max-width: 50px;
+  margin-right: 10px;
 }

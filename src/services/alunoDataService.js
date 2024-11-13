@@ -6,7 +6,7 @@ class AlunoDataService {
   }
 
   get(id) {
-    return http.get(`/alunos${id}`);
+    return http.get(`/alunos/${id}`);
   }
 
   create(data) {
