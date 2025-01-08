@@ -3,5 +3,5 @@ Aplicação para consumo de uma API Rest previamente desenvolvida
 
 #Paginas a serem implementadas
 
-Turmas
-Avisos
+* Turmas
+* Avisos
